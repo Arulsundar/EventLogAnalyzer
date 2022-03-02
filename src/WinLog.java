@@ -38,20 +38,11 @@ public class WinLog {
 		pool.execute(new Producer(machine));
 
 		pool.execute(new Consumer());
-//		Runtime.getRuntime().addShutdownHook(new Thread() {
-//			public void run() {
-//				try {
-//
-//					pool.execute(new Producer(machine));
-//					
-////					pool.execute(new Consumer());
-//					Thread.sleep(200);
-//				} catch (InterruptedException e) {
-//					Thread.currentThread().interrupt();
-//					e.printStackTrace();
-//				}
-//			}
-//		});
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				pool.shutdown();
+			}
+		});
 		
 
 	}
