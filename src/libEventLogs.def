@@ -1,0 +1,9 @@
+EXPORTS
+    Java_WinLog_closeEventLog = Java_WinLog_closeEventLog@16 @1
+    Java_WinLog_closeEventLog@16 @2
+    Java_WinLog_getOldestRecord = Java_WinLog_getOldestRecord@16 @3
+    Java_WinLog_getOldestRecord@16 @4
+    Java_WinLog_openEventLog = Java_WinLog_openEventLog@12 @5
+    Java_WinLog_openEventLog@12 @6
+    Java_WinLog_takeLogs = Java_WinLog_takeLogs@28 @7
+    Java_WinLog_takeLogs@28 @8
