@@ -20,7 +20,8 @@ public class Producer implements Runnable, Closeable {
 		this.handle = WinLog.openEventLog(machine);
 		if (directory.isDirectory()) {
 			System.out.println("Directory Check:"+directory.isDirectory());
-			if (directory.length() > 0) {
+			System.out.println(directory.list().length);
+			if (directory.list().length>0) {
 				File file = new File(directory.toPath()+File.separator + machine + ".txt");
 				System.out.println(file);
 				try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
