@@ -1,3 +1,5 @@
+import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -7,7 +9,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class WinLog {
+public class WinLog  {
 
 	static {
 		System.loadLibrary("EventLogs");
@@ -22,9 +24,9 @@ public class WinLog {
 	public static native Properties[] takeLogs(long handle, long pointer, int BUFFER_SIZE);
 
 	static WrapperQueue<Properties> queue = new WrapperQueue<Properties>(1000);
-//	ExecutorService pool = Executors.newFixedThreadPool(2);
-	
-	PausableThreadPoolExecutor pool=new PausableThreadPoolExecutor(2);
+	ExecutorService pool = Executors.newFixedThreadPool(2);
+
+//	PausableThreadPoolExecutor pool=new PausableThreadPoolExecutor(2);
 
 	String machine;
 
@@ -38,35 +40,31 @@ public class WinLog {
 		pool.execute(new Producer(machine));
 
 		pool.execute(new Consumer());
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() {
-				pool.shutdown();
-			}
-		});
+
+	}
+
 		
 
-	}
-
-	public void close() {
-//		pool.shutdown();
-//		try {
-//			OutputStream writer = Files.newOutputStream(Paths.get("C:\\Users\\gnana-pt4726\\Desktop\\New\\pointer.txt"),
-//					StandardOpenOption.WRITE);
-//			writer.write(String.format("%s%n", Producer.pointer).getBytes());
-//		} catch (IOException e) {
-//			throw new RuntimeException();
-//		}
-        pool.pause();
-		Consumer.bulkProcessor.flush();
-	}
 
 	public static void main(String[] args) throws InterruptedException {
-		WinLog obj = new WinLog("localhost");
-		obj.start();
-//		Thread.sleep(10000);
-//		obj.close();
-//		Thread.sleep(10000);
-//		obj.start();
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+//				pool.shutdownNow();
+//				final String folderPath = "C:\\Users\\gnana-pt4726\\Desktop\\New\\pointer";
+//				try {
+//					OutputStream writer = Files.newOutputStream(
+//							Paths.get(folderPath + File.separator + machine + ".txt"), StandardOpenOption.WRITE);
+//					writer.write(String.format("%s%n", new Producer(machine).getPointer()).getBytes());
+//				} catch (IOException e) {
+//					throw new RuntimeException();
+//				}
+//				Consumer.bulkProcessor.flush();
+				System.out.println("Going to terminate");
+			}
+		});
+	    WinLog obj = new WinLog("localhost") ;
+			obj.start();
+		
 	}
 
 }
