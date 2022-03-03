@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -61,9 +62,7 @@ public class Producer implements Runnable,Closeable{
     @Override
 	public void close() throws IOException{
 
-		
-			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"),
-					StandardOpenOption.WRITE);
+			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"));
 			writer.write(String.format("%s%n", getPointer()).getBytes());
 			WinLog.closeEventLog(handle);
 			System.out.println("closing producer");
