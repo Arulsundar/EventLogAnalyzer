@@ -39,7 +39,7 @@ public class Producer implements Runnable,Closeable{
 	@Override
 	public void run() {
 		while (true) {
-//			try {
+			try {
 				System.out.println(user + " " + handle + "  " + pointer);
 				Properties[] records = WinLog.takeLogs(handle, pointer, BUFFER_SIZE);
 				if (records.length > 0)
@@ -48,10 +48,10 @@ public class Producer implements Runnable,Closeable{
 					}
 				pointer += records.length;
 //			System.out.println(pointer);
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				Thread.currentThread().interrupt();
-//   			}
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+   			}
 		}
 	}
 
@@ -61,14 +61,14 @@ public class Producer implements Runnable,Closeable{
     @Override
 	public void close() {
 
-//		try {
-//			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"),
-//					StandardOpenOption.WRITE);
-//			writer.write(String.format("%s%n", getPointer()).getBytes());
-//			WinLog.closeEventLog(handle);
+		try {
+			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"),
+					StandardOpenOption.WRITE);
+			writer.write(String.format("%s%n", getPointer()).getBytes());
+			WinLog.closeEventLog(handle);
 			System.out.println("closing producer");
-//		} catch (IOException e) {
-//			throw new RuntimeException();
-//		}
+		} catch (IOException e) {
+			throw new RuntimeException();
+		}
 	}
 }
