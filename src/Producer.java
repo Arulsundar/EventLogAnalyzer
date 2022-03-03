@@ -50,8 +50,8 @@ public class Producer implements Runnable,Closeable{
 //			System.out.println(pointer);
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
-				throw new RuntimeException();
-			}
+				Thread.currentThread().interrupt();
+   			}
 		}
 	}
 

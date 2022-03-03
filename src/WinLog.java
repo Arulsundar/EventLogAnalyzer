@@ -3,7 +3,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class WinLog  {
+public class WinLog {
 
 	static {
 		System.loadLibrary("EventLogs");
@@ -37,9 +37,6 @@ public class WinLog  {
 
 	}
 
-		
-
-
 	public static void main(String[] args) throws InterruptedException {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
@@ -54,9 +51,9 @@ public class WinLog  {
 				}
 			}
 		});
-	    WinLog obj = new WinLog("localhost") ;
-			obj.start();
-		
+		WinLog obj = new WinLog("localhost");
+		obj.start();
+
 	}
 
 }
