@@ -18,8 +18,8 @@ public class WinLog {
 	public static native Properties[] takeLogs(long handle, long pointer, int BUFFER_SIZE);
 
 	static WrapperQueue<Properties> queue = new WrapperQueue<Properties>(1000);
-	static ExecutorService pool = Executors.newFixedThreadPool(2);
-
+	static ExecutorService pool = Executors.newFixedThreadPool(2); 
+	static List<Producer> list=new ArrayList<>();
 //	PausableThreadPoolExecutor pool=new PausableThreadPoolExecutor(2);
 
 	String machine;
@@ -30,8 +30,9 @@ public class WinLog {
 	}
 
 	public void start() {
-
-		pool.execute(new Producer(machine));
+        Producer obj=new Producer(machine);
+        list.add(obj);
+		pool.execute(obj);
 
 		pool.execute(new Consumer());
 
@@ -42,7 +43,8 @@ public class WinLog {
 			public void run() {
 				pool.shutdownNow();
 				System.out.println("Going to terminate");
-				new Producer("").close();
+					for(Producer p:list)
+						p.close();
 				try {
 					new Consumer().close();
 				} catch (IOException e) {
