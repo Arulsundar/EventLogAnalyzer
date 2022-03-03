@@ -2,14 +2,12 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
-public class Producer implements Runnable,Closeable{
+public class Producer implements Runnable, Closeable {
 
 	static long pointer;
 	int BUFFER_SIZE = 1024 * 10;
@@ -25,19 +23,16 @@ public class Producer implements Runnable,Closeable{
 				File file = new File(directory.toPath() + machine + ".txt");
 				try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
 
-					this.pointer = Long.valueOf(reader.readLine());
+					Producer.pointer = Long.valueOf(reader.readLine());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally {
 					file.delete();
 				}
 			}
-			
+			Producer.pointer = WinLog.getOldestRecord(handle);
 		}
-		else
-		{
-			this.pointer = WinLog.getOldestRecord(handle);
-		}
+
 		this.user = machine;
 	}
 
@@ -56,20 +51,21 @@ public class Producer implements Runnable,Closeable{
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
-   			}
+			}
 		}
 	}
 
 	long getPointer() {
 		return pointer;
 	}
-    @Override
-	public void close() throws IOException{
 
-			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"));
-			writer.write(String.format("%s%n", getPointer()).getBytes());
-			WinLog.closeEventLog(handle);
-			System.out.println("closing producer");
-		
+	@Override
+	public void close() throws IOException {
+
+		OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"));
+		writer.write(String.format("%s%n", getPointer()).getBytes());
+		WinLog.closeEventLog(handle);
+		System.out.println("closing producer");
+
 	}
 }
