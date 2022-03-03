@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,6 +45,13 @@ public class WinLog  {
 			public void run() {
 				pool.shutdownNow();
 				System.out.println("Going to terminate");
+				new Producer("").close();
+				try {
+					new Consumer().close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	    WinLog obj = new WinLog("localhost") ;

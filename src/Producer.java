@@ -66,6 +66,7 @@ public class Producer implements Runnable,Closeable{
 					StandardOpenOption.WRITE);
 			writer.write(String.format("%s%n", getPointer()).getBytes());
 			WinLog.closeEventLog(handle);
+			System.out.println("closing producer");
 		} catch (IOException e) {
 			throw new RuntimeException();
 		}
