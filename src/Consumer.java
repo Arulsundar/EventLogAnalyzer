@@ -54,7 +54,7 @@ public class Consumer implements Runnable,Closeable {
 
 	@Override
 	public void close() throws IOException {
-        bulkProcessor.flush();		
+//        bulkProcessor.flush();		
         System.out.println("Closing Consumer");
 	}
 
