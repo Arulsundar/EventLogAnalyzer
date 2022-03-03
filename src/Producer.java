@@ -20,7 +20,7 @@ public class Producer implements Runnable, Closeable {
 		this.handle = WinLog.openEventLog(machine);
 		if (directory.isDirectory()) {
 			if (directory.length() > 0) {
-				File file = new File(directory.toPath() + machine + ".txt");
+				File file = new File(directory.toPath()+File.separator + machine + ".txt");
 				try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
 
 					Producer.pointer = Long.valueOf(reader.readLine());
