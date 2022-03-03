@@ -27,7 +27,7 @@
                     <archive>
                     <manifest>
                         <mainClass>
-                            flink.BruteForceAttack
+                            WinLog
                         </mainClass>
                     </manifest>
                     </archive>
