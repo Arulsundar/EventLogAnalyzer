@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class Producer implements Runnable,Closeable{
 
-	long pointer;
+	static long pointer;
 	int BUFFER_SIZE = 1024 * 10;
 	long handle;
 	String user;
