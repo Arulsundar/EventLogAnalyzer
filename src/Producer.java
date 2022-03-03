@@ -59,16 +59,14 @@ public class Producer implements Runnable,Closeable{
 		return pointer;
 	}
     @Override
-	public void close() {
+	public void close() throws IOException{
 
-		try {
+		
 			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"),
 					StandardOpenOption.WRITE);
 			writer.write(String.format("%s%n", getPointer()).getBytes());
 			WinLog.closeEventLog(handle);
 			System.out.println("closing producer");
-		} catch (IOException e) {
-			throw new RuntimeException();
-		}
+		
 	}
 }

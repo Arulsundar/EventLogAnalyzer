@@ -41,16 +41,15 @@ public class WinLog {
 	public static void main(String[] args) throws InterruptedException {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				pool.shutdownNow();
+				pool.shutdown();
 				System.out.println("Going to terminate");
 					for(Producer p:list)
-						p.close();
-				try {
-					new Consumer().close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+						try {
+							p.close();
+							new Consumer().close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 			}
 		});
 		WinLog obj = new WinLog("localhost");
