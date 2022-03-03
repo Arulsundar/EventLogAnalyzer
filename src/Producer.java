@@ -32,6 +32,10 @@ public class Producer implements Runnable,Closeable{
 					file.delete();
 				}
 			}
+			
+		}
+		else
+		{
 			this.pointer = WinLog.getOldestRecord(handle);
 		}
 		this.user = machine;
