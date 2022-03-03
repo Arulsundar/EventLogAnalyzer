@@ -19,11 +19,14 @@ public class Producer implements Runnable, Closeable {
 	public Producer(String machine) {
 		this.handle = WinLog.openEventLog(machine);
 		if (directory.isDirectory()) {
+			System.out.println("Directory Check:"+directory.isDirectory());
 			if (directory.length() > 0) {
 				File file = new File(directory.toPath()+File.separator + machine + ".txt");
+				System.out.println(file);
 				try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
 
 					Producer.pointer = Long.valueOf(reader.readLine());
+					System.out.println("Pointer from file:"+pointer);
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally {
