@@ -1,10 +1,3 @@
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +17,7 @@ public class WinLog  {
 	public static native Properties[] takeLogs(long handle, long pointer, int BUFFER_SIZE);
 
 	static WrapperQueue<Properties> queue = new WrapperQueue<Properties>(1000);
-	ExecutorService pool = Executors.newFixedThreadPool(2);
+	static ExecutorService pool = Executors.newFixedThreadPool(2);
 
 //	PausableThreadPoolExecutor pool=new PausableThreadPoolExecutor(2);
 
@@ -49,16 +42,7 @@ public class WinLog  {
 	public static void main(String[] args) throws InterruptedException {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-//				pool.shutdownNow();
-//				final String folderPath = "C:\\Users\\gnana-pt4726\\Desktop\\New\\pointer";
-//				try {
-//					OutputStream writer = Files.newOutputStream(
-//							Paths.get(folderPath + File.separator + machine + ".txt"), StandardOpenOption.WRITE);
-//					writer.write(String.format("%s%n", new Producer(machine).getPointer()).getBytes());
-//				} catch (IOException e) {
-//					throw new RuntimeException();
-//				}
-//				Consumer.bulkProcessor.flush();
+				pool.shutdownNow();
 				System.out.println("Going to terminate");
 			}
 		});

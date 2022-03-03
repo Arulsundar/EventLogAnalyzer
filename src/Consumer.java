@@ -1,3 +1,5 @@
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.http.HttpHost;
@@ -10,7 +12,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
 
-public class Consumer implements Runnable {
+public class Consumer implements Runnable,Closeable {
 	RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", 9200, "http")));
 	static BulkProcessor bulkProcessor;
 
@@ -48,6 +50,11 @@ public class Consumer implements Runnable {
 			bulkProcessor.add(indexRequest);
 		}
 
+	}
+
+	@Override
+	public void close() throws IOException {
+        bulkProcessor.flush();		
 	}
 
 }

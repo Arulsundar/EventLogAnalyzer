@@ -1,24 +1,29 @@
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
-public class Producer implements Runnable {
+public class Producer implements Runnable,Closeable{
 
 	long pointer;
 	int BUFFER_SIZE = 1024 * 10;
 	long handle;
 	String user;
-	File directory = new File("C:\\Users\\gnana-pt4726\\Desktop\\New\\pointer");
+	final String folderPath = "C:\\Users\\gnana-pt4726\\Desktop\\New\\pointer";
+	File directory = new File(folderPath);
 
 	public Producer(String machine) {
 		this.handle = WinLog.openEventLog(machine);
 		if (directory.isDirectory()) {
 			if (directory.length() > 0) {
 				File file = new File(directory.toPath() + machine + ".txt");
-				try {
-					BufferedReader reader = Files.newBufferedReader(file.toPath());
+				try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
+
 					this.pointer = Long.valueOf(reader.readLine());
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -52,5 +57,17 @@ public class Producer implements Runnable {
 
 	long getPointer() {
 		return pointer;
+	}
+    @Override
+	public void close() {
+
+		try {
+			OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"),
+					StandardOpenOption.WRITE);
+			writer.write(String.format("%s%n", getPointer()).getBytes());
+			WinLog.closeEventLog(handle);
+		} catch (IOException e) {
+			throw new RuntimeException();
+		}
 	}
 }
