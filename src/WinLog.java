@@ -18,26 +18,16 @@ public class WinLog {
 	public static native Properties[] takeLogs(long handle, long pointer, int BUFFER_SIZE);
 
 	static WrapperQueue<Properties> queue = new WrapperQueue<Properties>(1000);
-	static ExecutorService pool = Executors.newFixedThreadPool(10); 
-	static List<Producer> list=new ArrayList<>();
-//	PausableThreadPoolExecutor pool=new PausableThreadPoolExecutor(2);
-
-	String machine;
-
-//	WinLog(String machine) {
-//
-//		this.machine = machine;
-//	}
+	static ExecutorService pool = Executors.newFixedThreadPool(10);
+	static List<Producer> list = new ArrayList<>();
 
 	public void start() {
-        Producer obj=new Producer("localhost");
-        Producer p1=new Producer("harish");
-        Producer p2=new Producer("sundar");
-        list.add(obj);
-        list.add(p1);
-        list.add(p2);
-        for(Producer i:list)
-		   pool.execute(i);
+		Producer obj = new Producer("localhost");
+//      Producer p1=new Producer("ip1");
+//      Producer p2=new Producer("ip2");
+		list.add(obj);
+		for (Producer i : list)
+			pool.execute(i);
 
 		pool.execute(new Consumer());
 
@@ -47,14 +37,14 @@ public class WinLog {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				pool.shutdown();
-				System.out.println("Going to terminate");
-					for(Producer p:list)
-						try {
-							p.close();
-							new Consumer().close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+//				System.out.println("Going to terminate");
+				for (Producer p : list)
+					try {
+						p.close();
+						new Consumer().close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 			}
 		});
 		WinLog obj = new WinLog();
@@ -63,7 +53,3 @@ public class WinLog {
 	}
 
 }
-/*
- * Handling ctrl+c in cmd; handle separate open ,read,and close event log. It
- * should be applicable for both local and remote machine
- */
