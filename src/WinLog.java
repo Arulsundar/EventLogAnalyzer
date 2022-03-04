@@ -18,21 +18,26 @@ public class WinLog {
 	public static native Properties[] takeLogs(long handle, long pointer, int BUFFER_SIZE);
 
 	static WrapperQueue<Properties> queue = new WrapperQueue<Properties>(1000);
-	static ExecutorService pool = Executors.newFixedThreadPool(2); 
+	static ExecutorService pool = Executors.newFixedThreadPool(10); 
 	static List<Producer> list=new ArrayList<>();
 //	PausableThreadPoolExecutor pool=new PausableThreadPoolExecutor(2);
 
 	String machine;
 
-	WinLog(String machine) {
-
-		this.machine = machine;
-	}
+//	WinLog(String machine) {
+//
+//		this.machine = machine;
+//	}
 
 	public void start() {
-        Producer obj=new Producer(machine);
+        Producer obj=new Producer("localhost");
+        Producer p1=new Producer("harish");
+        Producer p2=new Producer("sundar");
         list.add(obj);
-		pool.execute(obj);
+        list.add(p1);
+        list.add(p2);
+        for(Producer i:list)
+		   pool.execute(i);
 
 		pool.execute(new Consumer());
 
@@ -52,7 +57,7 @@ public class WinLog {
 						}
 			}
 		});
-		WinLog obj = new WinLog("localhost");
+		WinLog obj = new WinLog();
 		obj.start();
 
 	}

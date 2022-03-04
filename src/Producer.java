@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class Producer implements Runnable, Closeable {
 
-	static long pointer;
+	long pointer;
 	int BUFFER_SIZE = 1024 * 10;
 	long handle;
 	String user;
@@ -26,7 +26,7 @@ public class Producer implements Runnable, Closeable {
 				System.out.println(file);
 				try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
 
-					Producer.pointer = Long.valueOf(reader.readLine());
+					this.pointer = Long.valueOf(reader.readLine());
 					System.out.println("Pointer from file:"+pointer);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -34,9 +34,10 @@ public class Producer implements Runnable, Closeable {
 					file.delete();
 				}
 			}
-			Producer.pointer = WinLog.getOldestRecord(handle);
+			
 		}
-
+		else
+			this.pointer = WinLog.getOldestRecord(handle);
 		this.user = machine;
 	}
 
