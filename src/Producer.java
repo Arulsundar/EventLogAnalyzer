@@ -18,7 +18,6 @@ public class Producer implements Runnable, Closeable {
 
 	public Producer(String machine) {
 		this.handle = WinLog.openEventLog(machine);
-		if (directory.isDirectory()) {
 			System.out.println("Directory Check:"+directory.isDirectory());
 			System.out.println(directory.list().length);
 			if (directory.list().length>0) {
@@ -34,8 +33,6 @@ public class Producer implements Runnable, Closeable {
 					file.delete();
 				}
 			}
-			
-		}
 		else
 			this.pointer = WinLog.getOldestRecord(handle);
 		this.user = machine;
