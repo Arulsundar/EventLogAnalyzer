@@ -30,8 +30,11 @@ public class WinLog {
 //		Producer obj = new Producer("localhost");
 //      Producer p1=new Producer("ip1");
 //      Producer p2=new Producer("ip2");
-		list.add(new Producer(reader.readLine()));
-		} catch (IOException e) {
+		String machine;
+		while((machine=reader.readLine())!=null)
+		list.add(new Producer(machine));
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		for (Producer i : list)
