@@ -41,7 +41,7 @@ public class Producer implements Runnable, Closeable {
 	public void run() {
 		while (true) {
 			try {
-//				System.out.println(user + " " + handle + "  " + pointer);
+				System.out.println(user + " " + handle + "  " + pointer);
 				Properties[] records = WinLog.takeLogs(handle, pointer, BUFFER_SIZE);
 //				if (records.length > 0)
 					for (Properties record : records) {
@@ -66,7 +66,7 @@ public class Producer implements Runnable, Closeable {
 		OutputStream writer = Files.newOutputStream(Paths.get(folderPath + File.separator + user + ".txt"));
 		writer.write(String.format("%s%n", getPointer()).getBytes());
 		WinLog.closeEventLog(handle);
-//		System.out.println("closing producer");
+		System.out.println("closing producer");
 
 	}
 }
