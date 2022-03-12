@@ -9,16 +9,14 @@ import java.util.concurrent.Executors;
 public class WinLog {
 
 	static {
-		System.loadLibrary("EventLogs");
+		System.loadLibrary("Dll2");
 	}
 
-	public static native long getOldestRecord(long handle);
+	public static native long openEventLog(String machine,String user,String password);
 
-	public static native long openEventLog(String machine);
-
+	public static native Properties[] takeLogs(long handle, long pointer);
+	
 	public static native void closeEventLog(long handle);
-
-	public static native Properties[] takeLogs(long handle, long pointer, int BUFFER_SIZE);
 
 	static WrapperQueue<Properties> queue = new WrapperQueue<Properties>(1000);
 	static ExecutorService pool = Executors.newFixedThreadPool(10);
@@ -27,12 +25,13 @@ public class WinLog {
 	public void start() {
 		try(BufferedReader reader=Files.newBufferedReader(Paths.get("C:\\Users\\gnana-pt4726\\Desktop\\New\\ipConf\\conf.txt")))
 		{
-//		Producer obj = new Producer("localhost");
-//      Producer p1=new Producer("ip1");
-//      Producer p2=new Producer("ip2");
-		String machine;
-		while((machine=reader.readLine())!=null)
-		list.add(new Producer(machine));
+		   String line;
+		   while((line=reader.readLine())!=null)
+		   {
+			 String[] data=new String[2];
+				data=line.split(",");
+		     list.add(new Producer(data[0],data[1],data[2]));
+		   }
 		} 
 		catch (IOException e) {
 			e.printStackTrace();

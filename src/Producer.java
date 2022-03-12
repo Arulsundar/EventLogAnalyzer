@@ -16,8 +16,8 @@ public class Producer implements Runnable, Closeable {
 	final String folderPath = "C:\\Users\\gnana-pt4726\\Desktop\\New\\pointer";
 	File directory = new File(folderPath);
 
-	public Producer(String machine) {
-		this.handle = WinLog.openEventLog(machine);
+	public Producer(String machine,String user,String password) {
+		this.handle = WinLog.openEventLog(machine,user,password);
 		System.out.println("Directory Check:" + directory.isDirectory());
 		System.out.println(directory.list().length);
 		if (directory.list().length > 0) {
@@ -33,7 +33,7 @@ public class Producer implements Runnable, Closeable {
 				file.delete();
 			}
 		} else
-			this.pointer = WinLog.getOldestRecord(handle);
+			this.pointer =0;
 		this.user = machine;
 	}
 
@@ -42,7 +42,7 @@ public class Producer implements Runnable, Closeable {
 		while (true) {
 			try {
 				System.out.println(user + " " + handle + "  " + pointer);
-				Properties[] records = WinLog.takeLogs(handle, pointer, BUFFER_SIZE);
+				Properties[] records = WinLog.takeLogs(handle, pointer);
 //				if (records.length > 0)
 					for (Properties record : records) {
 						WinLog.queue.put(record);
